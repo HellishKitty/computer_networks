@@ -2,7 +2,7 @@ import socket
 
 
 def change(tmp):                        # Заменяет каждый 4-ый элемент на %
-    i = -1
+    i = 3
     while i != len(tmp):
         if i % 4 == 0 and i != 0:
             tmp = tmp[:i - 1] + '%' + tmp[i:]
@@ -10,8 +10,9 @@ def change(tmp):                        # Заменяет каждый 4-ый �
     return tmp
 
 
-server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM, proto=0)    # создаём сокет сервера
-server_sock.bind(('127.0.0.1', 53210))                                      # связываем сокет с хостом и портом
+address = ("localhost", 7777)
+server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)             # создаём сокет сервера
+server_sock.bind(address)                                                   # связываем сокет с хостом и портом
 server_sock.listen(1)                                                       # режим прослушивания
 print('\nServer is active\n')
 while True:
@@ -25,7 +26,7 @@ while True:
         print('String received: ', str_to_change)
         newstr = change(str_to_change.decode())
         client_sock.send(newstr.encode())
-        print('New string', '"', newstr.encode(), '"', 'has been sent\n')
+        print('New string', '"', newstr, '"', 'has been sent\n')
 
     client_sock.close()
     print('socket closed\n')
