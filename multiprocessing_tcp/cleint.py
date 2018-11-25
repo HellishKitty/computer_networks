@@ -22,7 +22,7 @@ print('redirecting to ', new_address, ' host...')
 client_socket.connect(('localhost', new_address))
 while True:
     print('\nenter number of command or /"command"')
-    print('1.  print\n2.    add\n3.   edit\n4. delete\n5. - sort\n0.   exit')
+    print('1.  print\n2.    add\n3.   edit\n4. delete\n5.   sort\n0.   exit')
     i = input('input> ')
     if i == '0' or i == '/exit':
         break
@@ -41,6 +41,7 @@ while True:
         r = requests.edit_request()
         if not r:
             continue
+        r = pickle.dumps(r)
         client_socket.send(r)
         message = client_socket.recv(1024)
         print(pickle.loads(message))

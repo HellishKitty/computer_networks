@@ -4,6 +4,7 @@ import os
 from multiprocessing import Process
 
 
+# Класс с иформацией о персонале
 class Worker:
     def __init__(self, surname, position, salary, birth):
         self.surname = surname

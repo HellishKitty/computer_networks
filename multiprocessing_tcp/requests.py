@@ -7,6 +7,7 @@
 import pickle
 
 
+# Класс с информацией о персонале
 class Worker:
     def __init__(self, surname, position, salary, birth):
         self.surname = surname

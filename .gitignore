@@ -6,3 +6,6 @@
 /multi_thread_tcp/venv
 /multiprocessing_tcp/.idea
 /multiprocessing_tcp/venv
+/simple_mail/venv
+/simple_mail/.idea
+*.docx
