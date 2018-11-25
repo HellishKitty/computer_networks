@@ -88,16 +88,20 @@ def add_message(conn, msg):
     conn.commit()
 
 
-def pull_messages(conn, sender, receiver, message=None):
+def pull_messages(conn, login, sender, message=None):
     c = conn.cursor()
-    sqltetx = 'SELECT * FROM messages WHERE (sender = ? OR receiver = ?)'
-    if receiver is None:
-        receiver = sender
+    sqltext = 'SELECT * FROM messages WHERE (sender = ? AND receiver = ?)'
+    if sender is None:
+        sender = login
+        sqltext = 'SELECT * FROM messages WHERE (sender = ? OR receiver = ?)'
     if message is not None:
         message = '%' + message + '%'
-        sqltetx += 'AND  message LIKE ?'
+        sqltext += 'AND  message LIKE ?'
     try:
-        c.execute(sqltetx, (sender, receiver, message))
+        if message is not None:
+            c.execute(sqltext, (sender, login, message))
+        else:
+            c.execute(sqltext, (sender, login))
     except:
         print(pt(), 'Таких сообщений нет')
         return False

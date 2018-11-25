@@ -21,6 +21,9 @@ class Message:
 
 
 def print_messages(pull, login):
+    if not pull:
+        print('Не найдено сообщений')
+        return
     print('--------------------')
     for i in pull:
         tmp = Message(i[0], i[2], i[3], i[4], i[1])
