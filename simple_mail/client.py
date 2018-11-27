@@ -10,6 +10,45 @@ def del_last(conn, login):
     conn.send(req)
 
 
+def view(conn, login):
+    sender = ''
+    msg = ''
+    while True:
+        print('\nЧтобы пропустить значение,тоставьте строку пустой')
+        print('1) Входящие || 2) Исходящие || 3) Все')
+        i = input('Ввод: ')
+        if i == '1':
+            receiver = login
+            sender = input('От кого: ')
+            msg = input('Ключевые слова: ')
+            f = 'in'
+            break
+        elif i == '2':
+            sender = login
+            receiver = input('Кому: ')
+            msg = input('Ключевые слова: ')
+            f = 'out'
+            break
+        elif i == '3':
+            msg = input('Ключевые слова: ')
+            sender = login
+            receiver = login
+            f = 'all'
+            break
+        else:
+            print('Ошибка ввода! Попробуйте ещё раз')
+    args = (receiver, sender, msg)
+    req = ('view', f, args)
+    req = pickle.dumps(req)
+    conn.send(req)
+    pull = conn.recv(4096)
+    pull = pickle.loads(pull)
+    try:
+        messages.print_messages(pull, login)
+    except:
+        print('Сообщения не найдены')
+
+
 def view_messages(conn, login):
     print('Чтобы оставить параметр пустым, оставьте строку пустокй')
     fr = input('Чьи сообщения вывести: ')
@@ -90,7 +129,7 @@ while True:
     if i == '1':
         send_message(client_socket, log)
     elif i == '2':
-        view_messages(client_socket, log)
+        view(client_socket, log)
     elif i == '3':
         del_last(client_socket, log)
     elif i == '0':

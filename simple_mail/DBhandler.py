@@ -76,7 +76,6 @@ def check_user(conn, login, password):
         return res[0]
 
 
-# TODO: Доделать запросы для сообщений
 """*************************---Запросы для таблицы с пользователями---**************************"""
 
 
@@ -88,22 +87,26 @@ def add_message(conn, msg):
     conn.commit()
 
 
-def pull_messages(conn, login, sender, message=None):
+def pull_messages(conn, flag, receiver, sender, msg):
+    msg = '%' + msg + '%'
     c = conn.cursor()
-    sqltext = 'SELECT * FROM messages WHERE (sender = ? AND receiver = ?)'
-    if sender is None:
-        sender = login
-        sqltext = 'SELECT * FROM messages WHERE (sender = ? OR receiver = ?)'
-    if message is not None:
-        message = '%' + message + '%'
-        sqltext += 'AND  message LIKE ?'
-    try:
-        if message is not None:
-            c.execute(sqltext, (sender, login, message))
+    if flag == 'in':
+        if sender == '':
+            sqltext = 'SELECT * FROM messages WHERE (sender = ? OR receiver = ?)'
         else:
-            c.execute(sqltext, (sender, login))
+            sqltext = 'SELECT * FROM messages WHERE (sender = ? AND receiver = ?)'
+    elif flag == 'out':
+        if receiver == '':
+            sqltext = 'SELECT * FROM messages WHERE (sender = ? OR receiver = ?)'
+        else:
+            sqltext = 'SELECT * FROM messages WHERE (sender = ? AND receiver = ?)'
+    elif flag == 'all':
+        sqltext = 'SELECT * FROM messages WHERE (sender = ? OR receiver = ?)'
+    try:
+        sqltext += 'AND message LIKE ?'
+        c.execute(sqltext, (sender, receiver, msg))
     except:
-        print(pt(), 'Таких сообщений нет')
+        print(pt(), 'Сообщения не найдены')
         return False
     res = c.fetchall()
     return res

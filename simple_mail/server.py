@@ -17,9 +17,9 @@ def pt():
     return t
 
 
-def sqlreq(conn, args):
+def sqlreq(conn, flag, args):
     print(pt(), 'запрос на просмотр сообщений от пользователя ', args[0])
-    msgs = DBhandler.pull_messages(conn, args[0], args[1], args[2])
+    msgs = DBhandler.pull_messages(conn, flag, args[0], args[1], args[2])
     if not msgs:
         return False
     print(pt(), 'Список сообщений был отправлен пользователю ', args[0])
@@ -82,7 +82,7 @@ def client_handler(conn, addr, db_file):
         if req[0] == 'send':
             DBhandler.add_message(sql, req[1])
         elif req[0] == 'view':
-            res = sqlreq(sql, req[1])
+            res = sqlreq(sql, req[1], req[2])
             if not res:
                 resp = False
                 resp = pickle.dumps(resp)
