@@ -22,7 +22,7 @@ class Message:
 
 def print_messages(pull, login):
     if not pull:
-        print('Не найдено сообщений')
+        print('Свопадений не найдено')
         return
     print('--------------------')
     for i in pull:

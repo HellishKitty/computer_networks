@@ -14,9 +14,9 @@ def view(conn, login):
     sender = ''
     msg = ''
     while True:
-        print('\nЧтобы пропустить значение,тоставьте строку пустой')
         print('1) Входящие || 2) Исходящие || 3) Все')
         i = input('Ввод: ')
+        print('Чтобы пропустить значение,тоставьте строку пустой')
         if i == '1':
             receiver = login
             sender = input('От кого: ')
